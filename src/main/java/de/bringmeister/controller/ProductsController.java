@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/products")
@@ -34,12 +35,24 @@ public class ProductsController {
     @RequestMapping(method = RequestMethod.GET, value="/{productId}")
     public Product getProductDetails(@PathVariable String productId) {
         LOG.info("Fetching details for product with ID {}", productId);
-        return repository.getProductById(productId).orElseThrow(() -> new NotFoundException());
+        return getProductFromRepository(productId);
     }
 
     @RequestMapping(method = RequestMethod.GET, value="/{productId}/prices/{unit}")
-    public Price getPriceForProduct() {
-        return null;
+    public Price getPriceForProduct(@PathVariable String productId, @PathVariable String unit) {
+        LOG.info("Fetching price for unit {} of product with ID {}", unit, productId);
+        Product product = getProductFromRepository(productId);
+        return Optional.ofNullable(product.getPrices().get(unit)).orElseThrow(() -> {
+            LOG.error("Price for unit {} was not found for product {}", unit, productId);
+            return new NotFoundException();
+        });
+    }
+
+    private Product getProductFromRepository(final String productId) {
+        return repository.getProductById(productId).orElseThrow(() -> {
+            LOG.error("Product with ID {} was not found!", productId);
+            return new NotFoundException();
+        });
     }
 
 }
