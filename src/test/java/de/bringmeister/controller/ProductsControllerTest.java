@@ -1,5 +1,6 @@
 package de.bringmeister.controller;
 
+import de.bringmeister.controller.exception.NotFoundException;
 import de.bringmeister.model.Product;
 import de.bringmeister.repository.ProductRepository;
 import org.junit.Before;
@@ -8,12 +9,16 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 
 public class ProductsControllerTest {
+
+    private static final String BANANA_ID = "product-1";
+    private static final Product BANANA = new Product(BANANA_ID,"Banana", "Yellow Thing", "ban", Collections.emptyMap());
 
     private ProductRepository repository;
     private ProductsController controller;
@@ -28,7 +33,7 @@ public class ProductsControllerTest {
     public void test_list_calls_repository_and_returns_result() {
         //GIVEN
         List<Product> products = Arrays.asList(
-                new Product("product-1", "Banana", "Yellow Thing", "ban", Collections.emptyMap()),
+                BANANA,
                 new Product("product-2", "Apple", "Not a computer", "app", Collections.emptyMap())
         );
         doReturn(products).when(repository).getAllProducts();
@@ -39,6 +44,28 @@ public class ProductsControllerTest {
         //THEN
         verify(repository).getAllProducts();
         assertThat(result, is(products));
+    }
+
+    @Test
+    public void test_getProductDetails_returns_product_from_repository() {
+        //GIVEN
+        doReturn(Optional.of(BANANA)).when(repository).getProductById(BANANA_ID);
+
+        //WHEN
+        Product result = controller.getProductDetails(BANANA_ID);
+
+        //THEN
+        verify(repository).getProductById(BANANA_ID);
+        assertThat(result, is(BANANA));
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void test_getProductDetails_throws_NotFound_if_product_is_not_found() {
+        //GIVEN
+        doReturn(Optional.empty()).when(repository).getProductById(BANANA_ID);
+
+        //WHEN/THEN
+        controller.getProductDetails(BANANA_ID);
     }
 
 }
