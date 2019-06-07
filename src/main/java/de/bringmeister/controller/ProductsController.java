@@ -1,9 +1,11 @@
 package de.bringmeister.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import de.bringmeister.controller.exception.NotFoundException;
 import de.bringmeister.model.Price;
 import de.bringmeister.model.Product;
 import de.bringmeister.repository.ProductRepository;
+import de.bringmeister.views.Views;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ public class ProductsController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @JsonView(Views.Summary.class)
     public List<Product> listProducts() {
         LOG.info("Listing all products...");
         return repository.getAllProducts();

@@ -26,22 +26,27 @@ public class Product {
 
     Product() {}
 
+    @JsonView(Views.Summary.class)
     public String getId() {
         return id;
     }
 
+    @JsonView(Views.Summary.class)
     public String getName() {
         return name;
     }
 
+    @JsonView(Views.Summary.class)
     public String getDescription() {
         return description;
     }
 
+    @JsonView(Views.Summary.class)
     public String getSku() {
         return sku;
     }
 
+    @JsonView(Views.Details.class)
     public Map<String, Price> getPrices() {
         return new HashMap<>(prices);
     }
