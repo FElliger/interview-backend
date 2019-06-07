@@ -1,6 +1,6 @@
 package de.bringmeister;
 
-import de.bringmeister.repository.InMemoryProductRepository;
+import de.bringmeister.repository.inmemory.InMemoryProductRepository;
 import de.bringmeister.repository.ProductRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

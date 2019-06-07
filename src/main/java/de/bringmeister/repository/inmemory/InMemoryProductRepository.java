@@ -1,6 +1,7 @@
-package de.bringmeister.repository;
+package de.bringmeister.repository.inmemory;
 
 import de.bringmeister.model.Product;
+import de.bringmeister.repository.ProductRepository;
 
 import java.util.List;
 import java.util.Optional;
