@@ -42,7 +42,7 @@ public class ProductsController {
     public Price getPriceForProduct(@PathVariable String productId, @PathVariable String unit) {
         LOG.info("Fetching price for unit {} of product with ID {}", unit, productId);
         Product product = getProductFromRepository(productId);
-        return Optional.ofNullable(product.getPrices().get(unit)).orElseThrow(() -> {
+        return Optional.ofNullable(product.getPrice(unit)).orElseThrow(() -> {
             LOG.error("Price for unit {} was not found for product {}", unit, productId);
             return new NotFoundException();
         });

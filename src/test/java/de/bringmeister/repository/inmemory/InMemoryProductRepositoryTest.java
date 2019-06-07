@@ -68,10 +68,10 @@ public class InMemoryProductRepositoryTest {
 
         //THEN
         assertThat(product1.getPrices().size(), is(2));
-        assertThat(product1.getPrices().get("piece"), is(BANANA_PIECE_PRICE));
-        assertThat(product1.getPrices().get("package"), is(BANANA_PACKAGE_PRICE));
+        assertThat(product1.getPrice("piece"), is(BANANA_PIECE_PRICE));
+        assertThat(product1.getPrice("package"), is(BANANA_PACKAGE_PRICE));
 
         assertThat(product2.getPrices().size(), is(1));
-        assertThat(product2.getPrices().get("piece"), is(APPLE_PIECE_PRICE));
+        assertThat(product2.getPrice("piece"), is(APPLE_PIECE_PRICE));
     }
 }
