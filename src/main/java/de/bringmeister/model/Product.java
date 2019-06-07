@@ -1,6 +1,11 @@
 package de.bringmeister.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import de.bringmeister.views.Views;
+
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Product {
@@ -25,10 +30,23 @@ public class Product {
         return id;
     }
 
-    public Collection<Price> getPrices() {
-        return prices.values();
+    public String getName() {
+        return name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public Map<String, Price> getPrices() {
+        return new HashMap<>(prices);
+    }
+
+    @JsonIgnore
     public Price getPrice(String unit) {
         return prices.get(unit);
     }
